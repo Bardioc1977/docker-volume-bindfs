@@ -1,5 +1,5 @@
-PLUGIN_NAME = bardioc/bindfs
-PLUGIN_TAG ?= latest
+PLUGIN_NAME = bardioc/docker-volume-bindfs
+PLUGIN_TAG ?= 1.0.0
 
 all: clean rootfs create
 
