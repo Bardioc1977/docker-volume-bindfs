@@ -1,6 +1,6 @@
-FROM golang:1.9-stretch as builder
-COPY . /go/src/github.com/lebokus/docker-volume-bindfs
-WORKDIR /go/src/github.com/lebokus/docker-volume-bindfs
+FROM golang:1.13-stretch as builder
+COPY . /go/src/github.com/Bardioc1977/docker-volume-bindfs
+WORKDIR /go/src/github.com/Bardioc1977/docker-volume-bindfs
 RUN set -ex && go install --ldflags '-extldflags "-static"'
 CMD ["/go/bin/docker-volume-bindfs"]
 

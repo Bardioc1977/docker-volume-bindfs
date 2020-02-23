@@ -12,15 +12,15 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/docker/go-plugins-helpers/volume"
+	"github.com/sirupsen/logrus"
 )
 
 const socketAddress = "/run/docker/plugins/bindfs.sock"
 
 type bindfsVolume struct {
-	Options []string
-	Sourcepath   string
+	Options     []string
+	Sourcepath  string
 	Mountpoint  string
 	connections int
 }
@@ -229,7 +229,7 @@ func (d *bindfsDriver) Capabilities() *volume.CapabilitiesResponse {
 }
 
 func (d *bindfsDriver) mountVolume(v *bindfsVolume) error {
-	cmd := exec.Command("bindfs", "/mnt/host" + v.Sourcepath, v.Mountpoint)
+	cmd := exec.Command("bindfs", "/mnt/host"+v.Sourcepath, v.Mountpoint)
 
 	for _, option := range v.Options {
 		cmd.Args = append(cmd.Args, "-o", option)

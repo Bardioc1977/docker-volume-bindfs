@@ -1,4 +1,4 @@
-PLUGIN_NAME = lebokus/bindfs
+PLUGIN_NAME = bardioc/bindfs
 PLUGIN_TAG ?= latest
 
 all: clean rootfs create
