@@ -1,59 +1,57 @@
 {
-  "description": "bindFS plugin for Docker",
-  "documentation": "https://docs.docker.com/engine/extend/plugins/",
-  "entrypoint": [
-    "/docker-volume-bindfs"
-  ],
-  "env": [
-    {
-      "name": "DEBUG",
-      "settable": [
-        "value"
-      ],
-      "value": "0"
-    }
-  ],
-  "interface": {
-    "socket": "bindfs.sock",
-    "types": [
-      "docker.volumedriver/1.0"
-    ]
-  },
-  "linux": {
-    "capabilities": [
-      "CAP_SYS_ADMIN"
+    "description": "bindFS plugin for Docker",
+    "documentation": "https://docs.docker.com/engine/extend/plugins/",
+    "entrypoint": [
+        "/docker-volume-bindfs"
     ],
-    "devices": [
-      {
-        "path": "/dev/fuse"
-      }
-    ]
-  },
-  "mounts": [
-    {
-      "destination": "/mnt/state",
-      "options": [
-        "rbind"
-      ],
-      "name": "state",
-      "source": "/var/lib/docker/plugins/",
-      "settable": [
-        "source"
-      ],
-      "type": "bind"
+    "network": {
+        "type": "host"
     },
-    {
-      "destination": "/mnt/host",
-      "options": [
-        "rbind"
-      ],
-      "name": "host-root",
-      "source": "/",
-      "settable": [
-        "source"
-      ],
-      "type": "bind"
+    "mounts": [
+        {
+            "source": "/var/lib/docker/plugins",
+            "destination": "/var/lib/docker/plugins",
+            "options": [
+                "rbind"
+            ],
+            "type": "bind"
+        },
+        {
+            "source": "/",
+            "destination": "/host",
+            "options": [
+                "rbind"
+            ],
+            "type": "bind"
+        }
+    ],
+    "ipchost": true,
+    "pidhost": true,
+    "propagatedMount": "/var/lib/docker-volumes/bindfs",
+    "env": [
+        {
+            "description": "Enables Debug Logging",
+            "name": "DEBUG",
+            "settable": [
+                "value"
+            ],
+            "value": "0"
+        }
+    ],
+    "linux": {
+        "capabilities": [
+            "CAP_SYS_ADMIN"
+        ],
+        "devices": [
+            {
+                "path": "/dev/fuse"
+            }
+        ]
+    },
+    "interface": {
+        "socket": "bindfs.sock",
+        "types": [
+            "docker.volumedriver/1.0"
+        ]
     }
-  ],
-  "propagatedmount": "/mnt/volumes"
 }

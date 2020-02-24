@@ -37,8 +37,8 @@ func newBindfsDriver(root string) (*bindfsDriver, error) {
 	logrus.WithField("method", "new driver").Debug(root)
 
 	d := &bindfsDriver{
-		root:      filepath.Join(root, "volumes"),
-		statePath: filepath.Join(root, "state", "bindfs-state.json"),
+		root:      root,
+		statePath: filepath.Join("/var/lib/docker/plugins/", "bindfs-state.json"),
 		volumes:   map[string]*bindfsVolume{},
 	}
 
@@ -229,7 +229,7 @@ func (d *bindfsDriver) Capabilities() *volume.CapabilitiesResponse {
 }
 
 func (d *bindfsDriver) mountVolume(v *bindfsVolume) error {
-	cmd := exec.Command("bindfs", "/mnt/host"+v.Sourcepath, v.Mountpoint)
+	cmd := exec.Command("bindfs", filepath.Join("/host", v.Sourcepath), v.Mountpoint)
 
 	for _, option := range v.Options {
 		cmd.Args = append(cmd.Args, "-o", option)
@@ -248,7 +248,7 @@ func (d *bindfsDriver) unmountVolume(target string) error {
 
 func logError(format string, args ...interface{}) error {
 	logrus.Errorf(format, args...)
-	return fmt.Errorf(format, args)
+	return fmt.Errorf(format, args...)
 }
 
 func main() {
@@ -257,7 +257,7 @@ func main() {
 		logrus.SetLevel(logrus.DebugLevel)
 	}
 
-	d, err := newBindfsDriver("/mnt")
+	d, err := newBindfsDriver("/var/lib/docker-volumes/bindfs")
 	if err != nil {
 		log.Fatal(err)
 	}
